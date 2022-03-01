@@ -1,49 +1,71 @@
 import React from "react";
-import Card from "./Card";
 import './App.css'
+import dataSource from "./dataSource";
+import SearchForm from "./SearchForm";
+import AlbumList from "./AlbumList";
+import Navbar from "./Navbar";
+import NewAlbum from "./NewAlbum";
+import {Router, Route, Switch} from "react-router-dom";
+import {createBrowserHistory} from "history";
+import OneAlbum from "./OneAlbum"
+
+const history = createBrowserHistory();
 
 class App extends React.Component {
 
-    state = {albumList : [
-            {
-                "id": 0,
-                "title": "10,000 Days",
-                "description": "Some album stuff would usually go here to description the album.",
-                "year": 2006,
-                "imgUrl": "https://picsum.photos/100/100",
-                "buttonText": "OK"
-            },
-            {
-                "id": 1,
-                "title": "Aenima",
-                "description": "Only the greatest tool album ever.",
-                "year": 1996,
-                "imgUrl": "https://picsum.photos/100/100",
-                "buttonText": "OK"
-            },
-            {
-                "id": 2,
-                "title": "Fear Inoculum",
-                "description": "The newest album.",
-                "year": 2019,
-                "imgUrl": "https://picsum.photos/100/100",
-                "buttonText": "OK"
-            }
-        ]}
+    state = {albumList : [], searchPhrase : "", currentlySelectedAlbumnId : 3}
 
-    renderList = () => {
-        return this.state.albumList.map(
-            (album) => {
-                return (<Card albumTitle={album.title} albumDescription={album.description} buttonText={album.buttonText} imgUrl={album.imgUrl}/>)
+    updateSingleAlbum = (id) => {
+        console.log("updateSingleAlbum = ", id)
+        var indexNumber = 0
+        for (var i = 0; i = this.state.albumList.length; i++){
+            if(this.state.albumList[i].id == id){
+                indexNumber = i
             }
-        )
+            this.setState({currentlySelectedAlbumnId: indexNumber})
+            history.push('/show/' + indexNumber)
+            console.log("state", this.state)
+        }
+    }
+
+    componentDidMount() {
+        this.loadAlbums()
+    }
+
+    loadAlbums = async () => {
+        const response = await dataSource.get('/albums')
+        this.setState({albumList : response.data})
+    }
+
+    updateSearchResults = async (phrase) => {
+        console.log("phrase = ", phrase)
+        this.setState({searchPhrase:phrase})
+        const response = await dataSource.get('/albums/search/description/' + phrase)
+        console.log(response)
+        this.setState({albumList: response.data})
     }
 
     render() {
         return (
-            <div className="container">
-                {this.renderList()}
-            </div>
+            <Router history={history}>
+                <div>
+                    <Navbar />
+                    <Switch>
+                        <Route exact path="/" render={() => {
+                            return (
+                                <div>
+                                    <SearchForm onSubmit={this.updateSearchResults}/>
+                                    <AlbumList albumList={this.state.albumList}/>
+                                </div>
+                            )
+                        }}/>
+                        <Route exact path="/new" component={NewAlbum}/>
+                        <Route exact path="/show/:albumId" render={ () =>
+                            <OneAlbum album={this.state.albumList(this.state.currentlySelectedAlbumnId)}/>}/>
+                    </Switch>
+                </div>
+            </Router>
+
         )
     }
 }
