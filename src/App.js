@@ -13,13 +13,13 @@ const history = createBrowserHistory();
 
 class App extends React.Component {
 
-    state = {albumList : [], searchPhrase : "", currentlySelectedAlbumnId : 3}
+    state = {albumList : [], searchPhrase : "", currentlySelectedAlbumId : 3}
 
     updateSingleAlbum = (id) => {
         console.log("updateSingleAlbum = ", id)
         var indexNumber = 0
-        for (var i = 0; i = this.state.albumList.length; i++){
-            if(this.state.albumList[i].id == id){
+        for (var i = 0; i < this.state.albumList.length; i++){
+            if(this.state.albumList[i].id === id){
                 indexNumber = i
             }
             this.setState({currentlySelectedAlbumnId: indexNumber})
@@ -55,13 +55,13 @@ class App extends React.Component {
                             return (
                                 <div>
                                     <SearchForm onSubmit={this.updateSearchResults}/>
-                                    <AlbumList albumList={this.state.albumList}/>
+                                    <AlbumList albumList={this.state.albumList} onClick={this.updateSingleAlbum}/>
                                 </div>
                             )
                         }}/>
                         <Route exact path="/new" component={NewAlbum}/>
                         <Route exact path="/show/:albumId" render={ () =>
-                            <OneAlbum album={this.state.albumList(this.state.currentlySelectedAlbumnId)}/>}/>
+                            <OneAlbum album={this.state.albumList[this.state.currentlySelectedAlbumId]}/>}/>
                     </Switch>
                 </div>
             </Router>
