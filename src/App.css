@@ -6,3 +6,11 @@
     margin: 10px;
     padding: 5px;
 }
+.track-container {
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 2px;
+    background-color: #eee;
+    padding: 1px;
+    margin: 1px;
+}

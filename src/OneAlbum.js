@@ -1,6 +1,17 @@
 import React from "react";
+import TracksList from "./TracksList";
+import TrackLyrics from "./TrackLyrics";
+import TrackVideo from "./TrackVideo";
 
 class OneAlbum extends React.Component{
+
+    state = {currentlySelectedTrackId: 0}
+
+    handleSingleTrack = (id) => {
+        console.log("Track Selected: ", id)
+        this.setState({currentlySelectedTrackId:id})
+    }
+
     render() {
         console.log("Props for Onealbum", this.props)
         return(
@@ -14,9 +25,7 @@ class OneAlbum extends React.Component{
                                 <h5 className="card-title">{this.props.album.title}</h5>
                                 <p className="card-text">{this.props.album.description}</p>
                                 <div className="list-group">
-                                    <li>Show the album tracks here</li>
-                                    <li>Show the album tracks here</li>
-                                    <li>Show the album tracks here</li>
+                                    <span><TracksList tracks={this.props.album.tracks}  onClick={this.handleSingleTrack}/></span>
                                 </div>
                                 <a href="#" className="btn btn-primary">Edit</a>
                             </div>
@@ -24,10 +33,10 @@ class OneAlbum extends React.Component{
                     </div>
                     <div className="col col-sm-9">
                         <div className="card">
-                            <p>Show the lyrics of the selected track here</p>
+                            <p><TrackLyrics lyrics={this.props.album.tracks[this.state.currentlySelectedTrackId].lyrics}/></p>
                         </div>
                         <div className="card">
-                            <p>Show the Youtube video of the selected track here</p>
+                            <p><TrackVideo url={this.props.album.tracks[this.state.currentlySelectedTrackId].videoUrl}/></p>
                         </div>
                     </div>
                 </div>
