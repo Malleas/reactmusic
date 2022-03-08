@@ -7,6 +7,10 @@ class Card extends React.Component{
         this.props.onClick(this.props.albumId)
     }
 
+    handleAlbumEdit = () => {
+        this.props.editAlbum(this.props.albumId)
+    }
+
     render() {
         return (
             <div className="card" style={{width: '12rem'}}>
@@ -14,7 +18,8 @@ class Card extends React.Component{
                 <div className="card-body">
                     <h5 className="card-title">{this.props.albumTitle}</h5>
                     <p className="card-text">{this.props.albumDescription}</p>
-                    <a href="#" onClick={this.handleOnClick} className="btn btn-primary">{this.props.buttonText}</a>
+                    <button onClick={this.handleOnClick} className="btn btn-primary">{this.props.buttonText}</button>
+                    <button onClick={this.handleAlbumEdit} className="btn btn-success">Edit</button>
                 </div>
             </div>
         )

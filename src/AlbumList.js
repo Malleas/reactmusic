@@ -8,6 +8,11 @@ class AlbumList extends React.Component {
         this.props.onClick(albumId)
     }
 
+    handleEditAlbum = (albumId) => {
+        console.log("The albumID to edit is: ", albumId)
+        this.props.onEditAlbum(albumId)
+    }
+
     render() {
         const albums =  this.props.albumList.map(
             (album) => {
@@ -16,9 +21,10 @@ class AlbumList extends React.Component {
                     albumId={album.id}
                     albumTitle={album.title}
                     albumDescription={album.description}
-                    buttonText="Ok"
+                    buttonText="Details"
                     imgUrl={album.image_name}
                     onClick={this.handleSelectOne}
+                    editAlbum={this.handleEditAlbum}
                 />)
             })
         return(
