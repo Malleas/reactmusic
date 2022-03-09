@@ -37,7 +37,7 @@ class EditAlbum extends React.Component {
     }
 
     saveAlbum = async (album) => {
-        axios.put('http://localhost:3100/albums', album)
+        axios.put('http://localhost:3100/albums/' + album.id, album)
             .then(results => {
                 console.log(results)
                 console.log(results.data)
